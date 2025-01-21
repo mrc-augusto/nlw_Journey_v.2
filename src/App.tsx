@@ -1,8 +1,12 @@
 import {MapPin, Calendar, ArrowRight, UserRoundPlus, Settings2, X, AtSign, Plus} from 'lucide-react'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 export function App() {
   const [isGuestsInputOpen, setIsGuestsInputOpen] = useState(false)
   const [isGuestModalOpen, setIsGuestsModalOpen] = useState(false)
+  const [emailsToInvite, setEmailsToInvite] = useState([
+    'mrc_augusto@hotmail.com',
+    'aryaugusto6@gmail.com'
+  ])
 
   function openGuestsInput(){
     setIsGuestsInputOpen(true)
@@ -18,6 +22,32 @@ export function App() {
 
   function closeGuestsModal(){
     setIsGuestsModalOpen(false)
+  }
+
+  function addNewEmailToInvite(event: FormEvent<HTMLFormElement>){
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
+    const email = data.get('email')?.toString()
+
+    if(!email){
+      return
+    }
+
+    if(emailsToInvite.includes(email)){
+      return
+    }
+
+    setEmailsToInvite([
+      ...emailsToInvite,
+      email
+    ])
+
+    event.currentTarget.reset()
+  }
+
+  function removeEmailFromInvite(emailToRemove: string){
+    const newEmailList = emailsToInvite.filter(email => email !== emailToRemove)
+    setEmailsToInvite(newEmailList)
   }
 
   return (
@@ -115,43 +145,27 @@ export function App() {
             </div>
 
             <div className='flex flex-wrap gap-2'>
-              <div className='flex gap-2  bg-zinc-800 py-1.5 px-2.5 rounded-md'>
-                <span className='text-zinc-300'>@mrc_augusto@hotmail.com</span>
-                <button type='button'>
-                  <X className='size-4 text-zinc-400'/>
-                </button>
-              </div>
-
-              <div className='flex gap-2  bg-zinc-800 py-1.5 px-2.5 rounded-md'>
-                <span className='text-zinc-300'>@mrc_augusto@hotmail.com</span>
-                <button type='button'>
-                  <X className='size-4 text-zinc-400'/>
-                </button>
-              </div>
-
-              <div className='flex gap-2  bg-zinc-800 py-1.5 px-2.5 rounded-md'>
-                <span className='text-zinc-300'>@mrc_augusto@hotmail.com</span>
-                <button type='button'>
-                  <X className='size-4 text-zinc-400'/>
-                </button>
-              </div>
-              <div className='flex gap-2  bg-zinc-800 py-1.5 px-2.5 rounded-md'>
-                <span className='text-zinc-300'>@mrc_augusto@hotmail.com</span>
-                <button type='button'>
-                  <X className='size-4 text-zinc-400'/>
-                </button>
-              </div>
-              
+              {emailsToInvite.map(email => {
+                return(
+                  <div key={email} className='flex gap-2  bg-zinc-800 py-1.5 px-2.5 rounded-md'>
+                    <span className='text-zinc-300'>{email}</span>
+                    <button type='button' onClick={()=>removeEmailFromInvite(email)}>
+                      <X className='size-4 text-zinc-400'/>
+                    </button>
+                  </div>
+                )
+              })}
             </div>
 
             <div className='w-full h-px bg-zinc-800'/>
 
-            <form className='bg-zinc-950 p-2.5 flex gap-2 items-center rounded-lg border-zinc-800'>
+            <form onSubmit={addNewEmailToInvite} className='bg-zinc-950 p-2.5 flex gap-2 items-center rounded-lg border-zinc-800'>
               <div className='flex items-center flex-1 gap-2'>
                 <AtSign className='size-5 text-zinc-400'/>
                 <input
                   className='bg-transparent placeholder-zinc-400 outline-none flex-1' 
-                  type="text"
+                  type="email"
+                  name='email'
                   placeholder='Digite o email do convidado' 
                 />
               </div>
