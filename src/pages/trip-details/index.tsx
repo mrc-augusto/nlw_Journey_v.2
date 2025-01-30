@@ -1,6 +1,26 @@
-import { Calendar, CircleCheck, CircleDashed, Link2, MapPin, Plus, Settings2, UserCog } from "lucide-react";
+import { Calendar, CircleCheck, CircleDashed, Clock, Link2, MapPin, Plus, Settings2, Tag, UserCog, X } from "lucide-react";
+import { useState } from "react";
 
 export function TripDetailsPage(){
+  const [isCreateActivityModalOpen, setIsCreateActiviyModalOpen] = useState(false)
+  const [isRegisterLinkModalOpen, setIsRegisterLinkModalOpen] = useState(false)
+
+  function openCreateActivyModal(){
+    setIsCreateActiviyModalOpen(true)
+  }
+
+  function closeCreateActivyModal(){
+    setIsCreateActiviyModalOpen(false)
+  }
+
+  function openRegisterLinkModal(){
+    setIsRegisterLinkModalOpen(true)
+  }
+
+  function closeRegisterLinkModal(){
+    setIsRegisterLinkModalOpen(false)
+  }
+
   return(
     <div className="max-w-6xl px-6 py-10 mx-auto space-y-8">
       <div className="h-16 flex items-center justify-between gap-5 px-4 bg-zinc-900 shadow-shape rounded-xl">
@@ -16,7 +36,8 @@ export function TripDetailsPage(){
           
           <div className="w-px h-6 bg-zinc-800"></div>
 
-          <button className=' flex items-center gap-2 bg-zinc-800 text-zinc-200 py-2 px-5 font-medium rounded-lg hover:bg-zinc-700'>
+          <button 
+            className=' flex items-center gap-2 bg-zinc-800 text-zinc-200 py-2 px-5 font-medium rounded-lg hover:bg-zinc-700'>
             Alterar local/data
             <Settings2 className='size-5'/>
           </button>
@@ -29,7 +50,10 @@ export function TripDetailsPage(){
           {/* Header */}
           <div className="flex items-center justify-between">
             <h2 className="text-zinc-50 font-semibold text-3xl">Atividades</h2>
-            <button className="bg-lime-300 flex items-center gap-2 py-2 px-5 font-medium text-lime-950 rounded-lg hover:bg-lime-400">
+            <button
+              onClick={openCreateActivyModal} 
+              className="bg-lime-300 flex items-center gap-2 py-2 px-5 font-medium text-lime-950 rounded-lg hover:bg-lime-400"
+            >
               <Plus className="size-5"/>
               Cadastrar atividade
             </button>
@@ -75,7 +99,7 @@ export function TripDetailsPage(){
               <div className="flex items-center justify-between gap-4">
                 <div className="space-y-1.5">
                   <span className="text-zinc-100 block font-medium">Reserva do AirBnB</span>
-                  <a href='#' className="text-zinc-400 text-xs block font-medium truncate">https://www.airbnb.com.br/rooms/10470001145646878456165</a>
+                  <a href='#' className="text-zinc-400 text-xs block font-medium truncate hover:text-zinc-200">https://www.airbnb.com.br/rooms/10470001145646878456165</a>
                 </div>
                 <Link2 className="text-zinc-400 size-5 shrink-0"/>
               </div>
@@ -85,13 +109,17 @@ export function TripDetailsPage(){
               <div className="flex items-center justify-between gap-4">
                 <div className="space-y-1.5">
                   <span className="text-zinc-100 block font-medium">Reserva do AirBnB</span>
-                  <a href='#' className="text-zinc-400 text-xs block font-medium truncate">https://www.airbnb.com.br/rooms/10470001145646878456165</a>
+                  <a href='#' className="text-zinc-400 text-xs block font-medium truncate hover:text-zinc-200">https://www.airbnb.com.br/rooms/10470001145646878456165</a>
                 </div>
                 <Link2 className="text-zinc-400 size-5 shrink-0"/>
               </div>
             </div>
               
-            <button className="w-full bg-zinc-800 flex justify-center items-center gap-2 px-5 py-2 text-zinc-200 font-semibold rounded-lg hover:bg-zinc-700">
+            <button 
+              type="button"
+              onClick={openRegisterLinkModal}
+              className="w-full bg-zinc-800 flex justify-center items-center gap-2 px-5 py-2 text-zinc-200 font-semibold rounded-lg hover:bg-zinc-700"
+            >
               <Plus className="size-5 text-zinc-200"/>
               Cadastrar novo link
             </button>
@@ -130,6 +158,106 @@ export function TripDetailsPage(){
 
         </div>
       </main>
+
+      {/* Modais */}
+
+      {/* MOdal Criar Atividade */}
+      {isCreateActivityModalOpen && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
+          <div className="w-[540px] bg-zinc-900 px-6 py-5 flex flex-col space-y-5 rounded-xl shadow-shape">
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <h2 className="text-white text-lg font-bold">Cadastrar atividade</h2>
+                <button type="button" onClick={closeCreateActivyModal}>
+                  <X className="size-5 text-zinc-400"/>
+                </button>
+              </div>
+
+              <p className="text-sm text-zinc-400">
+                Todos os convidados podem visualizar as atividades
+              </p>
+            </div>
+
+            <form className="space-y-3">
+              <div className="flex items-center flex-1 gap-2.5 px-4 py-2.5 bg-zinc-950 rounded-lg">
+                <Tag className="size-5 text-zinc-400"/>
+                <input 
+                  type="text" 
+                  className="flex-1 bg-transparent placeholder-zinc-400 outline-none"
+                  placeholder="Qual a atividade?"
+                />
+              </div>
+
+              <div className="flex justify-between gap-2">
+                <div className="flex-1 flex items-center  gap-2.5 px-4 py-2.5 bg-zinc-950 rounded-lg">
+                  <Calendar className="size-5 text-zinc-400"/>
+                  <input 
+                    type="text"
+                    className="bg-transparent placeholder-zinc-400 border-zinc-800 outlne-none"
+                    placeholder="20 de agosto" 
+                  />
+                </div>
+                <div className="w-[140px] flex justify-center items-center gap-2.5 bg-zinc-950 px-4 py-2.5 rounded-lg">
+                  <Clock className="size-5 text-zinc-400"/>
+                  <input 
+                    type="text" 
+                    className=" flex-1 bg-transparent placeholder-zinc-400 border-zinc-800 outlne-none"
+                    placeholder="Horário"
+                  />
+                </div>
+              </div>
+              <button 
+                type="submit"
+                className="w-full bg-lime-300 px-5 py-2 font-semibold rounded-lg hover:bg-lime-400"
+              >
+                Salvar atividade
+              </button>
+            </form>
+
+          </div>
+        </div>
+      )}
+      {/* Fim Modal Criar Atividade */}
+
+      {/* Modal Cadastrar Link */}
+        {isRegisterLinkModalOpen && (
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
+            <div className="w-[640px] bg-zinc-900 px-6 py-5 space-y-5 shadow-shape rounded-xl">
+              
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-white text-lg font-semibold">Cadastrar link</h2>
+                  <button type="button" onClick={closeRegisterLinkModal}>
+                    <X className="size-5 text-zinc-400"/>
+                  </button>
+                </div>
+                <p className="text-sm text-zinc-400">
+                  Todos convidados podem visualizar os links importantes
+                </p>
+              </div>
+
+              <form>
+                <div className="flex-1 flex items-center gap-2.5 px-4 py-2.5 bg-zinc-950 rounded-lg text-zinc-100">
+                  <Tag className="size-5 text-zinc-400"/>
+                  <input 
+                    type="text"
+                    className="flex-1 bg-transparent placeholder-zinc-400 border-zinc-800 outline-none"
+                    placeholder="Título do link" 
+                  />
+                </div>
+              </form>
+
+            </div>
+          </div>
+        )}
+      {/* Fim Modal Cadastrar Link */}
+
+      {/* Modal Gerenciar Usuarios */}
+      {/* Fim Modal Gerenciar Usuaários */}
+
+      {/* Fim Modais */}
+
     </div>
   )
 }
