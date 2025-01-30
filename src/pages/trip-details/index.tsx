@@ -1,9 +1,10 @@
-import { Calendar, CircleCheck, CircleDashed, Clock, Link2, MapPin, Plus, Settings2, Tag, UserCog, X } from "lucide-react";
+import { Calendar, CircleCheck, CircleDashed, Clock, Link2, Mail, MapPin, Plus, Settings2, Tag, User, UserCog, X } from "lucide-react";
 import { useState } from "react";
 
 export function TripDetailsPage(){
   const [isCreateActivityModalOpen, setIsCreateActiviyModalOpen] = useState(false)
   const [isRegisterLinkModalOpen, setIsRegisterLinkModalOpen] = useState(false)
+  const [isGuestsManagerModalOpen, setIsGuestsManagerModalOpen] = useState(false)
 
   function openCreateActivyModal(){
     setIsCreateActiviyModalOpen(true)
@@ -19,6 +20,14 @@ export function TripDetailsPage(){
 
   function closeRegisterLinkModal(){
     setIsRegisterLinkModalOpen(false)
+  }
+
+  function openGuestsManagerModal(){
+    setIsGuestsManagerModalOpen(true)
+  }
+
+  function closeGuestsManagerModal(){
+    setIsGuestsManagerModalOpen(false)
   }
 
   return(
@@ -151,7 +160,10 @@ export function TripDetailsPage(){
           </div>
           
           
-          <button className="w-full px-5 py-2 bg-zinc-800 flex items-center justify-center gap-2 text-zinc-200 font-semibold rounded-lg hover:bg-zinc-700">
+          <button
+            onClick={openGuestsManagerModal} 
+            className="w-full px-5 py-2 bg-zinc-800 flex items-center justify-center gap-2 text-zinc-200 font-semibold rounded-lg hover:bg-zinc-700"
+          >
             <UserCog className="size-5 text-zinc-200"/>
             Gerenciar convidados
           </button>
@@ -223,7 +235,7 @@ export function TripDetailsPage(){
       {/* Modal Cadastrar Link */}
         {isRegisterLinkModalOpen && (
           <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
-            <div className="w-[640px] bg-zinc-900 px-6 py-5 space-y-5 shadow-shape rounded-xl">
+            <div className="w-[540px] bg-zinc-900 px-6 py-5 space-y-5 shadow-shape rounded-xl">
               
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -237,7 +249,7 @@ export function TripDetailsPage(){
                 </p>
               </div>
 
-              <form>
+              <form className="space-y-3">
                 <div className="flex-1 flex items-center gap-2.5 px-4 py-2.5 bg-zinc-950 rounded-lg text-zinc-100">
                   <Tag className="size-5 text-zinc-400"/>
                   <input 
@@ -246,6 +258,21 @@ export function TripDetailsPage(){
                     placeholder="Título do link" 
                   />
                 </div>
+                <div className="flex-1 flex items-center gap-2.5 px-4 py-2.5 bg-zinc-950 rounded-lg text-zinc-100">
+                  <Link2 className="size-5 text-zinc-400"/>
+                  <input 
+                    type="text"
+                    className="flex-1 bg-transparent placeholder-zinc-400 border-zinc-800 outline-none"
+                    placeholder="URL" 
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full h-11 bg-lime-300 px-5 py-2 text-lime-950 font-semibold rounded-lg hover:bg-lime-400"
+                >
+                  Salvar Link
+                </button>
               </form>
 
             </div>
@@ -254,6 +281,63 @@ export function TripDetailsPage(){
       {/* Fim Modal Cadastrar Link */}
 
       {/* Modal Gerenciar Usuarios */}
+
+      {isGuestsManagerModalOpen && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
+          <div className="w-[540px] bg-zinc-900 px-6 py-5 shadow-shape rounded-xl space-y-5">
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <h2 className="text-white text-lg font-semibold">Confirmar participação</h2>
+                <button
+                  onClick={closeGuestsManagerModal}
+                  type="button"
+                  >
+                  <X className="size-5 text-zinc-400"/>
+                </button>
+              </div>
+
+              <p className="text-zinc-400 text-sm">
+                Você foi convidado(a) para participar de uma viagem para <span className="text-zinc-100 font-bold">Florianópolis</span>, Brasil nas datas de <span className="text-zinc-100 font-bold">16 a 27 de Agosto de 2024</span>.
+              </p>
+              <br />
+              <p className="text-zinc-400 text-sm">
+                Para confirmar sua presença na viagem, preencha os dados abaixo:
+              </p>
+            </div>
+
+            <form className="space-y-3">
+              <div className="flex-1 flex gap-2 h-14 items-center px-4 py-2.5 bg-zinc-950 rounded-lg">
+                <User className="size-5 text-zinc-400"/>
+                <input 
+                  type="text" 
+                  className="bg-transparent flex-1 placeholder-zinc-400 text-zinc-100 border-zinc-800 outline-none"
+                  placeholder="Seu nome completo"
+                />
+              </div>
+
+              <div className="flex-1 flex gap-2 h-14 items-center px-4 py-2.5 bg-zinc-950 rounded-lg">
+                <Mail className="size-5 text-zinc-400"/>
+                <input 
+                  type="email" 
+                  className="bg-transparent flex-1 placeholder-zinc-400 text-zinc-100 border-zinc-800 outline-none"
+                  placeholder="Seu email"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full justify-center items-center bg-lime-300 h-11 px-5 py-2 rounded-lg text-lime-950 hover:bg-lime-400"
+              >
+                Confirmar minha presença
+              </button>
+            </form>
+
+          </div>
+          
+        </div>
+      )}
+
       {/* Fim Modal Gerenciar Usuaários */}
 
       {/* Fim Modais */}
